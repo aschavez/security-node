@@ -2,7 +2,7 @@
 
 var models = require('../models'),
     errors = require('restify-errors'),
-    bcrypt = require('bcrypt'),
+    bcrypt = require('bcrypt-nodejs'),
     jwt = require('jsonwebtoken'),
     config = require('../../config'),
     _ = require('lodash');

@@ -2,7 +2,7 @@
 
 var models = require('../models'),
     errors = require('restify-errors'),
-    bcrypt = require('bcrypt'),
+    bcrypt = require('bcrypt-nodejs'),
     _ = require('lodash');
 
 /* Collection of Users */
@@ -40,7 +40,7 @@ exports.getUser = function(req, res, next) {
 /* User Creation */
 exports.createUser = function(req, res, next) {
   var data = req.body;
-  data.password = bcrypt.hashSync(data.password, 10);
+  data.password = bcrypt.hashSync(data.password);
   models.User.create(data).then(function(result) {
     res.json(result.dataValues);
   }).catch(function(err) {
@@ -53,7 +53,7 @@ exports.updateUser = function(req, res, next) {
   var id = req.params.id;
   var data = req.body;
   if(data.password) {
-    data.password = bcrypt.hashSync(data.password, 10);
+    data.password = bcrypt.hashSync(data.password);
   }
   models.User.findById(id).then(function(result) {
     result.updateAttributes(data).then(function(result) {
