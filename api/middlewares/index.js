@@ -2,5 +2,6 @@
 
 module.exports = {
   paramParser: require('./paramParser'),
-  httpException: require('./httpException')
+  httpException: require('./httpException'),
+  security: require('./security').verifyToken
 };

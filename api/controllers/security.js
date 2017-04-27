@@ -14,42 +14,44 @@ exports.getAccessToken = function(req, res, next) {
     where: {
       username: data.username
     }
-  }).then(function(user) {
-    var isBlocked = user.blocked || false;
-    if(!isBlocked) {
-      if (bcrypt.compareSync(data.password, user.password)) {
-        var timestamp = new Date().getTime(),
-            userData = _.pick(user, ['id', 'username', 'firstName', 'lastName']),
-            tokenData = {
-              // iss: 5,
-              user: userData,
-              // ts: timestamp
-            },
-            token = jwt.sign(tokenData, config.app.tokenSecret, {
-              expiresIn: config.app.tokenExp
-            });
-        res.json({
-          token: token
-        });
+  })
+    .then(function(user) {
+      var isBlocked = user.blocked || false;
+      if(!isBlocked) {
+        if (bcrypt.compareSync(data.password, user.password)) {
+          var timestamp = new Date().getTime(),
+              userData = _.pick(user, ['id', 'username', 'firstName', 'lastName', 'RoleId']),
+              tokenData = {
+                iss: 'dashboard',
+                user: userData,
+                iat: timestamp
+              },
+              token = jwt.sign(tokenData, config.app.tokenSecret, {
+                expiresIn: config.app.tokenExp
+              });
+          res.json({
+            token: token
+          });
+        } else {
+          next(new errors.HTTPException({
+            statusCode: 401,
+            message: 'Login failed',
+            context: { userMessage: 'El usuario o la contraseña son incorrectos.' }
+          }));
+        }
       } else {
         next(new errors.HTTPException({
           statusCode: 401,
-          message: 'Login failed',
-          context: { userMessage: 'El usuario o la contraseña son incorrectos.' }
+          message: 'User blocked',
+          context: { userMessage: 'El usuario se encuentra actualmente bloqueado.' }
         }));
       }
-    } else {
-      next(new errors.HTTPException({
+    })
+    .catch(function(err) {
+      next(new errors.HTTPException(err, {
         statusCode: 401,
-        message: 'User blocked',
-        context: { userMessage: 'El usuario se encuentra actualmente bloqueado.' }
+        message: 'User not found',
+        context: { userMessage: 'El usuario o la contraseña son incorrectos.' }
       }));
-    }
-  }).catch(function(err) {
-    next(new errors.HTTPException(err, {
-      statusCode: 401,
-      message: 'User not found',
-      context: { userMessage: 'El usuario o la contraseña son incorrectos.' }
-    }));
-  });
+    });
 };

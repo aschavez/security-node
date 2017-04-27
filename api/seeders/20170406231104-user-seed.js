@@ -8,9 +8,9 @@ module.exports = {
         username: 'admin',
         firstName: 'Admin',
         email: 'admin@company.com',
-        password: '123',
+        password: '$2a$10$ohcvWB.qlqkAA6sdXKRWVOKAIoTbXqklSqc55AwVpzSGqn1pTo36.',
         status: 'validated',
-        roleId: 2,
+        roleId: 1,
         createdAt: Sequelize.fn('now'),
         updatedAt: Sequelize.fn('now')
       }

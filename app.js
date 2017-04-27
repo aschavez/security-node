@@ -26,6 +26,7 @@ server.use(restify.jsonBodyParser({ mapParams: true }));
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser({ mapParams: true }));
 server.use(middlewares.paramParser);
+server.use(middlewares.security);
 // server.use(restify.fullResponse());
 
 /* Error Handling */

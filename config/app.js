@@ -2,7 +2,7 @@
 
 module.exports = {
   name: process.env.APPNAME || 'API Rest',
-  port: process.env.PORT || 8000,
+  port: process.env.PORT || 8011,
   version: process.env.APPVERSION || '1.0.0',
   env: process.env.NODE_ENV || 'development',
   pageLimit: process.env.PAGE_LIMIT || 10,

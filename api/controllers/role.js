@@ -42,7 +42,6 @@ exports.createRole = function(req, res, next) {
   models.Role.create(data).then(function(result) {
     res.json(result.dataValues);
   }).catch(function(err) {
-    console.log(err);
     next(new errors.HTTPException(err));
   });
 };
