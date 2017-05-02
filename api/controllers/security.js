@@ -19,19 +19,31 @@ exports.getAccessToken = function(req, res, next) {
       var isBlocked = user.blocked || false;
       if(!isBlocked) {
         if (bcrypt.compareSync(data.password, user.password)) {
-          var timestamp = new Date().getTime(),
-              userData = _.pick(user, ['id', 'username', 'firstName', 'lastName', 'RoleId']),
-              tokenData = {
-                iss: 'dashboard',
-                user: userData,
-                iat: timestamp
-              },
-              token = jwt.sign(tokenData, config.app.tokenSecret, {
-                expiresIn: config.app.tokenExp
+          models.Role.findById(user.RoleId, {
+            attributes: [],
+            include: [{
+              model: models.Permission,
+              attributes: ['value'],
+              through: { attributes: [] }
+            }]
+          })
+            .then(function(role) {
+              var userScopes = _.map(role.Permissions, function(perm) { return perm.value }),
+                  timestamp = new Date().getTime(),
+                  userData = _.pick(user, ['id', 'username', 'firstName', 'lastName', 'RoleId']),
+                  tokenData = {
+                    iss: 'dashboard',
+                    user: userData,
+                    scopes: userScopes,
+                    iat: timestamp
+                  },
+                  token = jwt.sign(tokenData, config.app.tokenSecret, {
+                    expiresIn: config.app.tokenExp
+                  });
+              res.json({
+                token: token
               });
-          res.json({
-            token: token
-          });
+            });
         } else {
           next(new errors.HTTPException({
             statusCode: 401,

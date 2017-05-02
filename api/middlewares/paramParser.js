@@ -19,7 +19,11 @@ module.exports = function(req, res, next) {
     }
     /* Limit */
     if (limit = req.query.limit) {
-      pms.limit = parseInt(limit);
+      if(limit != 'all') {
+        pms.limit = parseInt(limit);
+      } else {
+        delete pms.limit;
+      }
       delete req.query.limit;
     }
     /* Order */

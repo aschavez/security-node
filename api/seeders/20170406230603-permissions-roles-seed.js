@@ -52,17 +52,65 @@ module.exports = {
         updatedAt: Sequelize.fn('now')
       },
       {
-        roleId: 2,
+        roleId: 1,
         permissionId: 9,
         createdAt: Sequelize.fn('now'),
         updatedAt: Sequelize.fn('now')
       },
       {
-        roleId: 2,
+        roleId: 1,
         permissionId: 10,
         createdAt: Sequelize.fn('now'),
         updatedAt: Sequelize.fn('now')
-      }
+      },
+      {
+        roleId: 1,
+        permissionId: 11,
+        createdAt: Sequelize.fn('now'),
+        updatedAt: Sequelize.fn('now')
+      },
+      {
+        roleId: 1,
+        permissionId: 12,
+        createdAt: Sequelize.fn('now'),
+        updatedAt: Sequelize.fn('now')
+      },
+      {
+        roleId: 1,
+        permissionId: 16,
+        createdAt: Sequelize.fn('now'),
+        updatedAt: Sequelize.fn('now')
+      },
+      {
+        roleId: 1,
+        permissionId: 17,
+        createdAt: Sequelize.fn('now'),
+        updatedAt: Sequelize.fn('now')
+      },
+      {
+        roleId: 2,
+        permissionId: 2,
+        createdAt: Sequelize.fn('now'),
+        updatedAt: Sequelize.fn('now')
+      },
+      {
+        roleId: 2,
+        permissionId: 4,
+        createdAt: Sequelize.fn('now'),
+        updatedAt: Sequelize.fn('now')
+      },
+      {
+        roleId: 2,
+        permissionId: 16,
+        createdAt: Sequelize.fn('now'),
+        updatedAt: Sequelize.fn('now')
+      },
+      {
+        roleId: 2,
+        permissionId: 17,
+        createdAt: Sequelize.fn('now'),
+        updatedAt: Sequelize.fn('now')
+      },
     ], {});
   },
 

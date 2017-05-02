@@ -27,6 +27,14 @@ exports.getUser = function(req, res, next) {
   var id = req.params.id,
       params = req.pms;
   params.attributes = (req.pms.attributes) ? _.without(req.pms.attributes, 'password') : { exclude: ['password'] };
+  // Verify Role
+  if(req.requiredUser && req.requiredUser != id) {
+    next(new errors.HTTPException({
+      statusCode: 403,
+      message: 'Insufficient permissions',
+      context: { userMessage: 'No se encuentra autorizado para esta acción.' }
+    }));
+  }
   models.User.findById(id, params).then(function(result) {
     res.json(result);
   }).catch(function(err) {
@@ -50,8 +58,17 @@ exports.createUser = function(req, res, next) {
 
 /* User update */
 exports.updateUser = function(req, res, next) {
-  var id = req.params.id;
-  var data = req.body;
+  var id = req.params.id,
+      data = req.body;
+  // Verify Role
+  if(req.requiredUser && req.requiredUser != id) {
+    next(new errors.HTTPException({
+      statusCode: 403,
+      message: 'Insufficient permissions',
+      context: { userMessage: 'No se encuentra autorizado para esta acción.' }
+    }));
+  }
+  if(req.requiredUser) { delete data.RoleId; }
   if(data.password) {
     data.password = bcrypt.hashSync(data.password);
   }

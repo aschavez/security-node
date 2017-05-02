@@ -48,10 +48,13 @@ exports.createRole = function(req, res, next) {
 
 /* Role update */
 exports.updateRole = function(req, res, next) {
-  var id = req.params.id;
-  var data = req.body;
+  var id = req.params.id,
+      data = req.body,
+      permissions = data.Permissions;
+  delete data.Permissions;
   models.Role.findById(id).then(function(result) {
     result.updateAttributes(data).then(function(result) {
+      result.setPermissions(permissions);
       res.json(result.dataValues);
     }).catch(function(err) {
       next(new errors.HTTPException(err));
